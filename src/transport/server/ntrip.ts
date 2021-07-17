@@ -539,13 +539,13 @@ export class NtripTransport extends Transport {
                 this.res.flushHeaders();
             }
 
-            private printSourcetable() {
+            private async printSourcetable(): Promise<void> {
                 this.res.statusVersion = 'SOURCETABLE';
                 this.res.setHeader('Connection', 'close');
                 this.res.setHeader('Server', 'NTRIP ' + Caster.NAME + '/1.0');
                 this.res.setHeader('Content-Type', 'text/plain');
                 this.res.sendDate = true;
-                this.res.end(this.transport.getSourcetable(this.req.query?.query));
+                this.res.end(await this.transport.getSourcetable(this.req.query?.query));
             }
         };
 
