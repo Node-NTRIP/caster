@@ -23,28 +23,28 @@
   "license": "GPL-3.0-or-later",
   "dependencies": {
     "@ntrip/geonames": "^1.0.0",
-    "@gnss/nmea": "^0.1.1",
-    "@gnss/rtcm": "^0.1.4",
-    "chalk": "^4.1.0",
+    "@gnss/nmea": "^0.1.2",
+    "@gnss/rtcm": "^0.1.5",
+    "chalk": "^4.1.1",
     "http-parser-ts": "^0.1.3",
     "verror": "^1.10.0"
   },
   "optionalDependencies": {
-    "@serialport/bindings": "^9.0.1",
-    "@serialport/stream": "^9.0.1",
+    "@serialport/bindings": "^9.2.0",
+    "@serialport/stream": "^9.0.7",
     "ecef-projector": "^1.0.1",
-    "i18n-iso-countries": "^6.0.0",
-    "serialport": "^9.0.1"
+    "i18n-iso-countries": "^6.8.0",
+    "serialport": "^9.2.0"
   },
   "devDependencies": {
-    "@types/jest": "^26.0.14",
-    "@types/node": "^14.11.2",
-    "@types/serialport": "^8.0.1",
-    "@types/verror": "^1.10.4",
-    "jest": "^26.4.2",
-    "ts-jest": "^26.4.0",
-    "ts-node-dev": "^1.0.0-pre.63",
-    "typescript": "^4.0.3"
+    "@types/jest": "^26.0.24",
+    "@types/node": "^16.4.0",
+    "@types/serialport": "^8.0.2",
+    "@types/verror": "^1.10.5",
+    "jest": "^27.0.6",
+    "ts-jest": "^27.0.4",
+    "ts-node-dev": "^1.1.8",
+    "typescript": "^4.3.5"
   },
   "readmeFilename": "README.md"
 }
