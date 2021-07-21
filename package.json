@@ -1,6 +1,6 @@
 {
   "name": "@ntrip/caster",
-  "version": "0.3.1",
+  "version": "0.3.2",
   "description": "NTRIP caster",
   "main": "build/index.js",
   "types": "build/index.d.ts",
