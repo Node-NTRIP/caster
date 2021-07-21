@@ -45,7 +45,7 @@ describe('NtripHTTPParser', () => {
         });
 
         test.each(['HTTP', 'RTSP', 'RTP'])('%s protocol', (type) => {
-            return new Promise(resolve => {
+            return new Promise<void>(resolve => {
                 server.on('request', req => {
                     expect(req.headers['@protocol']).toBe(type);
                     resolve();
@@ -104,7 +104,7 @@ describe('NtripHTTPParser', () => {
         });
 
         test.each(['ICY', 'SOURCETABLE', 'RTSP', 'HTTP'])('%s protocol', (type) => {
-            return new Promise(resolve => {
+            return new Promise<void>(resolve => {
                 request.on('response', req => {
                     expect(req.headers['@protocol']).toBe(type);
                     resolve();

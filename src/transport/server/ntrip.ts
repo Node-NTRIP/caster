@@ -229,9 +229,9 @@ export class NtripTransport extends Transport {
 
     close(): void {
         const closeServer = this.server === undefined ? null
-            : new Promise(resolve => this.server?.close(resolve));
+            : new Promise<void>((resolve, reject) => this.server?.close(err => err ? reject(err) : resolve()));
         const closePlainRtpSocket = this.plainRtpSocket === undefined ? null
-            : new Promise(resolve => this.plainRtpSocket?.close(resolve));
+            : new Promise<void>(resolve => this.plainRtpSocket?.close(resolve));
 
         // Wait for server and socket to close
         Promise.all([closeServer, closePlainRtpSocket])
@@ -501,7 +501,7 @@ export class NtripTransport extends Transport {
                     this.connect({
                         type: 'server',
                         input: this.req.socket,
-                        output: this.res.socket
+                        output: this.res.socket ?? undefined
                     });
                 } catch (err) {
                     return this.res.error(500); // TODO
@@ -521,6 +521,8 @@ export class NtripTransport extends Transport {
                 if (this.req.mountpoint === null) return this.printSourcetable();
 
                 if (!(await this.authenticate())) return this.res.error(401);
+
+                if (this.res.socket === null) return this.res.error(500);
 
                 try {
                     this.connect({
@@ -732,7 +734,7 @@ export class NtripTransport extends Transport {
                         this.req.rtpSocket!.connect(this.req.rtpRemotePort!, this.req.remote!.host);
                     });
                 } catch (err) {
-                    this.setupError(err);
+                    return this.setupError(err);
                 }
 
                 await this.setupSocket();
@@ -751,7 +753,7 @@ export class NtripTransport extends Transport {
                 this.transport.rtpSessions.set(session.ssrc, this.req.rtpSession);
                 session.on('close', () => {
                     this.transport.rtpSessions.delete(session.ssrc);
-                    this.res.socket.destroy();
+                    this.res.socket?.destroy();
                 });
 
                 this.res.setHeader('Transport', this.req.rtspTransportParams!

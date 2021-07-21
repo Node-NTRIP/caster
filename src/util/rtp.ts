@@ -312,7 +312,7 @@ export class RtpPacketPayloadStream extends stream.Duplex {
     private get bufferRemaining(): number { return this.buffer!.length - this.bufferOffset!; }
     private readonly bufferHighWaterMark?: number;
     private readonly bufferTimeoutMs?: number;
-    private bufferTimeout?: number = undefined;
+    private bufferTimeout: ReturnType<typeof setTimeout> | null = null;
 
     constructor(private session: RtpSession, private readonly payloadType: number,
             bufferOptions?: {
@@ -386,9 +386,11 @@ export class RtpPacketPayloadStream extends stream.Duplex {
     }
 
     private async flushBuffer(): Promise<void> {
-        clearTimeout(this.bufferTimeout);
-        this.bufferTimeout = undefined;
-        await new Promise((resolve, reject) => {
+        if (this.bufferTimeout !== null) {
+            clearTimeout(this.bufferTimeout!);
+            this.bufferTimeout = null;
+        }
+        await new Promise<void>((resolve, reject) => {
             this.send(this.buffer!.slice(0, this.bufferOffset), err => {
                 if (err instanceof Error) reject(err);
                 else resolve();

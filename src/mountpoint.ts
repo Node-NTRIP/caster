@@ -69,9 +69,9 @@ export class Mountpoint extends events.EventEmitter {
     private _clients: Set<Client> = new Set<Client>();
     get clients(): ReadonlySet<Client> { return this._clients; }
 
-    private connectionTimeout?: number;
-    private silenceTimeout?: number;
-    private silenceWarningTimeout?: number;
+    private connectionTimeout: ReturnType<typeof setTimeout> | null = null;
+    private silenceTimeout: ReturnType<typeof setTimeout> | null = null;
+    private silenceWarningTimeout: ReturnType<typeof setTimeout> | null = null;
 
     readonly stats = {
         in: 0,
@@ -127,9 +127,11 @@ export class Mountpoint extends events.EventEmitter {
     }
 
     private resetTimeouts() {
-        clearTimeout(this.connectionTimeout);
-        clearTimeout(this.silenceTimeout);
-        clearTimeout(this.silenceWarningTimeout);
+        if (this.connectionTimeout !== null) clearTimeout(this.connectionTimeout);
+        if (this.silenceTimeout !== null) clearTimeout(this.silenceTimeout);
+        if (this.silenceWarningTimeout !== null) clearTimeout(this.silenceWarningTimeout);
+
+        this.connectionTimeout = this.silenceTimeout = this.silenceWarningTimeout = null;
 
         if (this.active) {
             this.silenceTimeout = setTimeout(() => {
